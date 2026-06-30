@@ -106,7 +106,6 @@ const resources = [
     'fit/profiles/profiles.js',
 
     'models/api.js',
-    'models/auth.js',
     'models/config.js',
     'models/enums.js',
     'models/intervals.js',
@@ -121,7 +120,6 @@ const resources = [
     'views/active-list-item.js',
     'views/activity-list.js',
     'views/ant-device-scan.js',
-    'views/auth-forms.js',
     'views/connection-switch.js',
     'views/data-views.js',
     'views/editor.js',

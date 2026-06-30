@@ -31,10 +31,10 @@ function intervalsToMaxPower(intervals, ftp) {
     }, ftp * 1.6);
 }
 
-function Interval(acc, interval, width, ftp, powerMax, viewPort) {
+function Interval(acc, interval, width, ftp, powerMax, viewPort, intervalIndex) {
     const stepsLength = interval.steps.length;
 
-    return acc + interval.steps.reduce((a, step) => {
+    return acc + interval.steps.reduce((a, step, stepIndex) => {
         const power    = models.ftp.toAbsolute(step.power, ftp) ?? 0;
         const cadence  = step.cadence;
         const slope    = step.slope;
@@ -50,7 +50,7 @@ function Interval(acc, interval, width, ftp, powerMax, viewPort) {
         const durationAttr = exists(duration) ? `duration="${infoTime}"` : '';
 
         return a +
-            `<div class="graph--bar zone-${zone}" style="height: ${height}px; width: ${width}%" ${powerAttr} ${cadenceAttr} ${slopeAttr} ${durationAttr}></div>`;
+            `<div class="graph--bar zone-${zone}" style="height: ${height}px; width: ${width}%" data-interval-index="${intervalIndex}" data-step-index="${stepIndex}" ${powerAttr} ${cadenceAttr} ${slopeAttr} ${durationAttr}></div>`;
     }, `<div class="graph--bar-group" style="width: ${width}px;">`) + `</div>`;
 }
 
@@ -65,7 +65,7 @@ function intervalsToGraph(workout, ftp, viewPort) {
 
         if(exists(interval.duration)) {
             width = intervalToWidth(interval.duration, totalDuration, totalWidth);
-            return Interval(acc, interval, width, ftp, maxPower, viewPort);
+            return Interval(acc, interval, width, ftp, maxPower, viewPort, intervals.indexOf(interval));
         }
 
         return '';
@@ -137,6 +137,7 @@ class WorkoutGraph extends HTMLElement {
 
         this.addEventListener('mouseover', this.onHover.bind(this), this.signal);
         this.addEventListener('mouseout', this.onMouseOut.bind(this), this.signal);
+        this.addEventListener('pointerup', this.onSelectStep.bind(this), this.signal);
         // window.addEventListener('resize', this.debounced.onWindowResize.bind(this), this.signal);
         window.addEventListener('resize', this.onWindowResize.bind(this), this.signal);
     }
@@ -196,6 +197,14 @@ class WorkoutGraph extends HTMLElement {
     }
     onMouseOut(e) {
         this.dom.info.style.display = 'none';
+    }
+    onSelectStep(e) {
+        const target = e.target.closest?.('.graph--bar');
+        if(!exists(target)) return;
+        xf.dispatch('ui:workoutJumpToStep', {
+            intervalIndex: parseInt(target.dataset.intervalIndex),
+            stepIndex: parseInt(target.dataset.stepIndex),
+        });
     }
     onWorkout(value) {
         this.workout = value; // this.workout = Object.assign({}, value);

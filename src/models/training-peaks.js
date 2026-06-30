@@ -112,8 +112,6 @@ function TrainingPeaks(args = {}) {
             } else {
                 if(response.status === 403) {
                     console.log(`:api :no-auth`);
-                    xf.dispatch('action:auth', ':password:login');
-
                     xf.dispatch('ui:modal:error:open', DialogMsg.noAuth);
                 }
                 return ':fail';

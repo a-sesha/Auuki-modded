@@ -21,7 +21,6 @@ _Status_: Currently working on creating a full suite of Apple platform native ap
 # The Web App
 - You can find the web app at [auuki.com](https://auuki.com)
 - There is also a special development version which has the latest features available for preview: [dev.auuki.com](https://dev.auuki.com)
-- [How to create a Profile and Connect Intervals.icu](https://forum.intervals.icu/t/auuki-com-intervals-icu-integration/87105)
 
 ## Sponsors 💖
 So, if you’re loving what Auuki’s bringing to the table, consider supporting the project on [GitHub Sponsors](https://github.com/sponsors/dvmarinoff)? Think of it as buying me a coffee or, heck, a whole power meter to keep this thing cranking. Hit that sponsor button and let’s keep the good times rolling!
@@ -81,7 +80,6 @@ The current development setup is using Suunto movestick mini, Garmin Fenix 5 wat
 Tacx Heart Rate monitor, Tacx Flux S trainer, and X240 laptop with Ubuntu 20.04.2 LTS, M1 Mac, and Samsung S9 Android phone.
 
 ## Manual
-- [How to create a Profile and Connect Intervals.icu](https://forum.intervals.icu/t/auuki-com-intervals-icu-integration/87105)
 - [How-To: Using the connection settings](https://github.com/dvmarinoff/Auuki/discussions/91)
 - [How-To: Using Auuki and another app concurrently](https://github.com/dvmarinoff/Auuki/discussions/101)
 

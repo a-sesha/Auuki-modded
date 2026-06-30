@@ -2335,163 +2335,6 @@ battery-level {
 }
 /* END ANT Device Request */
 
-/* User Auth */
-
-#forgot--msg {
-    font-size: 1.4em;
-    padding: 1em;
-
-    &.loading {
-        color: var(--zone-yellow)
-    }
-    &.success {
-        color: var(--zone-green)
-    }
-    &.fail {
-        color: var(--zone-red)
-    }
-}
-
-.auth, .profile {
-    display: block;
-    /* min-height: 26rem; */
-    margin: 3em auto 0;
-
-    .auth--tab--controls {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        height: 3em;
-    }
-    .auth--tab--switch {
-        height: 3em;
-        color: var(--foreground-color-inactive);
-
-        .form--header {
-            display: inline-block;
-            cursor: pointer;
-        }
-        &.active {
-            color: var(--foreground-color);
-        }
-    }
-    #passkey--tab--switch h2 {
-        cursor: not-allowed;
-    }
-
-    .input {
-        font-size: 1em;
-        margin: 1em 0;
-        padding: 0 1em;
-        height: 3em;
-        color: var(--dark);
-        background-color: #fff;
-        border: none;
-    }
-    .btn {
-        font-size: 1em;
-        margin: 1em 0;
-        padding: 0 1em;
-        height: 3em;
-        text-transform: none;
-    }
-
-    .form--header {
-        height: 3em
-    }
-    a {
-        color: #bbb;
-        text-transform: uppercase;
-        cursor: pointer;
-    }
-    a, p {
-        font-size: 1.2em;
-    }
-    .form--header {
-        font-size: 1.2em;
-        line-height: 3em;
-        text-transform: uppercase;
-    }
-    #passkey--forms.active,
-    #password--forms.active,
-    #passkey--register--form.active,
-    #passkey--login--form.active,
-    #login--form.active,
-    #register--form.active,
-    #forgot--form.active,
-    #reset--form.active {
-        display: block;
-    }
-
-    #passkey--forms,
-    #password--forms,
-    #login--form,
-    #register--form,
-    #reset--form,
-    #forgot--form,
-    #passkey--register--form,
-    #passkey--login--form
-    {
-        display: none;
-    }
-    #auth-error--section {
-        display: none;
-    }
-    #auth-error--section.active {
-        display: block;
-    }
-    .error {
-        font-size: 1.2em;
-        margin: 1em auto;
-
-        color: var(--red);
-    }
-    .tab--button {
-        font-size: 1.2em;
-        height: 1.4em;
-        margin: 1em;
-        line-height: 1.4em;
-        text-decoration: underline;
-        cursor: pointer;
-    }
-    .form--submit--section {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .webauthn--section {
-        margin: 1em 0;
-    }
-    .input[name="username"] {
-        display: none;
-    }
-    .cf-turnstile {
-        margin: 1em auto;
-    }
-}
-#profile {
-    display: none;
-}
-#profile.active {
-    display: block;
-}
-
-@media (prefers-color-scheme: light) {
-    body.auto-theme {
-        .auth, .profile {
-            .input {
-                border: 1px solid var(--border-color);
-            }
-        }
-    }
-}
-body.white-theme {
-    .auth, .profile {
-        .input {
-            border: 1px solid var(--border-color);
-        }
-    }
-}
-
 /* App Connections */
 .list--section {
     width: 100%;
@@ -3706,3 +3549,20 @@ and (min-width: 1900px) {
 }
 /* END Media Queries */
 
+
+.workout-control {
+    align-items: center;
+    color: var(--font-color);
+    display: inline-flex;
+    font-size: 0.8em;
+    font-weight: 700;
+    justify-content: center;
+}
+
+button.editor--icon {
+    background: transparent;
+    border: 1px solid currentColor;
+    border-radius: 0.35em;
+    color: var(--font-color);
+    min-width: 3.4em;
+}
