@@ -13,7 +13,6 @@ function Driver(args = {}) {
     function getOS() {
         if(!equals(navigator.appVersion.indexOf('Win'), -1)) return 'windows';
         if(!equals(navigator.appVersion.indexOf('Mac'), -1)) return 'macos';
-        if(!equals(navigator.appVersion.indexOf('Android'), -1)) return 'android';
         if(!equals(navigator.appVersion.indexOf('Linux'), -1)) return 'linux';
         return 'unknown';
     }
@@ -40,12 +39,6 @@ function Driver(args = {}) {
             result = ':success';
             driver = 'web-serial';
         }
-        if(equals(os, 'android')) {
-            _driver = SerialPolyfillDriver({onData: onRx});
-            result = ':success';
-            driver = 'serial-polyfill';
-        }
-
         return {
             result,
             driver,
@@ -73,8 +66,8 @@ function Driver(args = {}) {
         const antHrm = document.querySelector('#ant-hrm-settings');
 
         if(equals(res.result, ':success')) {
-            // Currently only Android has stable support for Web Serial API
-            if(equals(os, 'android')) {
+            // Web Serial is currently enabled for desktop Linux ANT+ setups.
+            if(equals(os, 'linux')) {
                 console.log(`:ant :driver :enable '${res.driver}'`);
                 xf.dispatch(`ant:driver:enable`);
                 antControllable.classList.remove('ant-not-supported');

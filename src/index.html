@@ -465,6 +465,12 @@
                                     <path d="M0 0h24v24H0V0z" fill="none"/>
                                     <path d="M19 13H5v-2h14v2z"/>
                                 </svg>
+                                <button type="button" class="editor--duplicate editor--icon">Copy</button>
+                                <button type="button" class="editor--split editor--icon">Split</button>
+                                <button type="button" class="editor--up editor--icon">Up</button>
+                                <button type="button" class="editor--down editor--icon">Down</button>
+                                <button type="button" class="editor--bulk-power editor--icon">+5%</button>
+                                <button type="button" class="editor--bulk-duration editor--icon">+30s</button>
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="editor--save editor--icon"
                                     height="24px"
@@ -638,256 +644,7 @@
                         class="library--switch--heading active"
                         action="settings:settings" topic=":nav">Settings
                     </navigation-action>
-                    <navigation-action
-                        id="link--settings-profile"
-                        class="library--switch--heading"
-                        action="settings:profile" topic=":nav">Profile
-                    </navigation-action>
                 </header>
-                <!-- profile--sub-tab -->
-                <div id="view--settings-profile" class="sub-tab">
-                    <!-- auth -->
-                    <div class="auth">
-                        <auth-forms>
-                            <div id="password--forms" class="active">
-                                <form id="register--form" class="register--form">
-                                    <h2 class="form--header">Register</h2>
-                                    <div>
-                                        <input id="register--email--input"
-                                            class="input"
-                                            name="email"
-                                            type="email"
-                                            placeholder="Email"
-                                            value=""
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <input id="register--password--input"
-                                            class="input"
-                                            name="password"
-                                            type="password"
-                                            pattern=".{8,64}"
-                                            title="8 characters minimum"
-                                            placeholder="Password"
-                                            value=""
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <input id="register--password-confirmation--input"
-                                            class="input"
-                                            name="password_confirmation"
-                                            pattern=".{8,64}"
-                                            title="8 characters minimum"
-                                            placeholder="Confirm Password"
-                                            type="password"
-                                            value=""
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <input class="input" name="username" type="text" value="" placeholder="Username" autocomplete="off" />
-                                    </div>
-                                    <div class="form--submit--section">
-                                        <button id="register--submit"
-                                                class="btn"
-                                                type="submit">Register</button>
-
-                                        <view-action action=":password:login" topic=":auth">
-                                            <div class="tab--button"
-                                                    index="1">Login instead</div>
-                                        </view-action>
-                                    </div>
-                                </form>
-                                <form id="login--form" class="login--form active">
-                                    <h2 class="form--header">Login</h2>
-                                    <div>
-                                        <input id="login--email--input"
-                                            class="input"
-                                            name="email"
-                                            type="email"
-                                            placeholder="Email"
-                                            value=""
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <input id="login--password--input"
-                                            class="input"
-                                            name="password"
-                                            type="Password"
-                                            pattern=".{8,64}"
-                                            title="8 characters minimum"
-                                            placeholder="Password"
-                                            value=""
-                                            required
-                                        />
-                                    </div>
-                                    <div class="form--submit--section">
-                                        <button id="login--submit"
-                                                class="btn"
-                                                type="submit">Login</button>
-
-                                        <view-action action=":password:register" topic=":auth">
-                                            <div class="tab--button">Register</div>
-                                        </view-action>
-                                        <view-action action=":password:forgot" topic=":auth">
-                                            <div class="tab--button">Forgot</div>
-                                        </view-action>
-                                    </div>
-                                </form>
-                                <form id="forgot--form" class="forgot--form">
-                                    <h2 class="form--header">Forgot</h2>
-                                    <div>
-                                        <input id="forgot--email--input"
-                                            class="input"
-                                            name="email"
-                                            type="email"
-                                            placeholder="Email"
-                                            value=""
-                                            required
-                                        />
-                                    </div>
-                                    <div class="form--submit--section">
-                                        <button id="forgot--submit"
-                                                class="btn"
-                                                type="submit">Forgot</button>
-                                        <view-action action=":password:login" topic=":auth">
-                                            <div class="tab--button">Login instead</div>
-                                        </view-action>
-                                    </div>
-                                    <div id="forgot--msg"></div>
-                                </form>
-                                <form id="reset--form" class="reset--form">
-                                    <h2 class="form--header">Reset</h2>
-                                    <div>
-                                        <input id="reset--password--input"
-                                            class="input"
-                                            name="password"
-                                            type="password"
-                                            pattern=".{8,64}"
-                                            title="8 characters minimum"
-                                            placeholder="Password"
-                                            value=""
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <input id="reset--password-confirmation--input"
-                                            class="input"
-                                            name="password_confirmation"
-                                            pattern=".{8,64}"
-                                            title="8 characters minimum"
-                                            placeholder="Confirm Password"
-                                            type="password"
-                                            value=""
-                                            required
-                                        />
-                                    </div>
-                                    <div class="form--submit--section">
-                                        <button id="reset--submit"
-                                                class="btn"
-                                                type="submit">Reset</button>
-                                        <view-action action=":password:login" topic=":auth">
-                                            <div class="tab--button">Login instead</div>
-                                        </view-action>
-                                    </div>
-                                </form>
-                                <!-- turnstile -->
-                                <div
-                                    id="cf-turnstile-container"
-                                    class="cf-turnstile"
-                                >
-                                </div> <!-- END turnstile -->
-                            </div> <!-- END password--forms -->
-                            <div id="auth-error--section" class="error">
-                            </div>
-                        </auth-forms>
-                    </div><!-- END auth -->
-
-                    <!-- profile -->
-                    <div id="profile" class="profile">
-                        <div>
-                            <button id="logout--button"
-                                    class="btn"
-                                    type="button">Logout</button>
-
-                        </div>
-                        <div class="list--sub-section app-connections">
-                            <o-auth>
-                                <div class="list--row--outer">
-                                    <div class="list--row--inner list--heading--cont">
-                                        <h2 class="list--sub-heading">Connections</h2>
-                                    </div>
-                                </div>
-                                <div class="list--row--outer">
-                                    <div class="app-connection icon list--row--inner intervals">
-                                        <svg class="app-connection--icon">
-                                            <use href="#icon--intervals"></use>
-                                        </svg>
-                                        <h3 class="app-connection--heading">Intervals.icu</h3>
-
-                                        <view-action action=":intervals:switch"
-                                                     topic=":oauth">
-                                            <div
-                                                id="intervals--connect--button"
-                                                class="app-connection--button">
-                                               Connect
-                                            </div>
-                                        </view-action>
-                                    </div>
-                                </div>
-                                <!-- <div class="list--row--outer">
-                                     <div class="app-connection icon list--row--inner tp">
-                                     <div class="tp-logo">TP</div>
-                                     <h3 class="app-connection--heading">TrainingPeaks</h3>
-                                     <view-action action=":trainingPeaks:switch"
-                                     topic=":oauth">
-                                     <div
-                                     id="tp--connect--button"
-                                     class="app-connection--button">
-                                     Connect
-                                     </div>
-                                     </view-action>
-                                     </div>
-                                     </div> -->
-                                <div class="list--row--outer strava">
-                                    <div class="list--row--inner app-connection logo">
-                                        <!-- <img class="app-connection--logo"
-                                             alt=""
-                                             src="./images/connections/btn_strava_connectwith_orange.svg" /> -->
-                                        <img class="app-connection--logo"
-                                             alt=""
-                                             src="./images/connections/powered-by-strava-logo.svg" />
-                                        <view-action action=":strava:switch"
-                                                     topic=":oauth">
-                                            <div
-                                                id="strava--connect--button"
-                                                class="app-connection--button">
-                                                Connect
-                                            </div>
-                                        </view-action>
-                                    </div>
-                                </div>
-
-
-
-                                <div class="list--row--outer">
-                                    <div class="app-connection icon list--row--inner">
-                                        <img class="app-connection--icon" alt="GC" src="images/connections/garmin-connect.png"/>
-                                        <h3 class="app-connection--heading">Garmin</h3>
-                                        <a class="app-connection--button app-connection--link a"
-                                           href="https://connect.garmin.com/modern/import-data"
-                                           target="_blank">Import</a>
-                                    </div>
-                                </div>
-                            </o-auth>
-                        </div> <!-- end connections -->
-                    </div> <!-- end profile -->
-
-                </div> <!-- end profile--sub-tab -->
-
                 <!-- settings--sub-tab -->
                 <div id="view--settings-settings" class="sub-tab active">
                     <div class="settings-tiles--cont">
@@ -1514,6 +1271,13 @@
                             <use href="#icon--skip-previous-btn"></use>
                         </svg>
                     </div>
+
+                    <div id="watch-step-back" class="control--btn workout-control" title="Previous workout step">‹</div>
+                    <div id="watch-shorten" class="control--btn workout-control" title="Shorten current step by 30 seconds">-30</div>
+                    <div id="watch-finish-step" class="control--btn workout-control" title="Finish current step">End</div>
+                    <div id="watch-extend" class="control--btn workout-control" title="Extend current step by 30 seconds">+30</div>
+                    <div id="watch-step-next" class="control--btn workout-control" title="Next workout step">›</div>
+                    <div id="workout-pause" class="control--btn workout-control" title="Pause workout progression">WP</div>
 
                     <div id="watch-lap" class="control--btn">
                         <svg class="control--btn--icon" width="24" height="24">

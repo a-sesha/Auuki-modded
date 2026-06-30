@@ -1,91 +1,183 @@
-<img alt="Auuki Indoor Cyling app for Structured Training" src="https://github.com/user-attachments/assets/292a3216-2f52-4994-9b15-614446e41912" />
+<img alt="Auuki Indoor Cycling app for Structured Training" src="https://github.com/user-attachments/assets/292a3216-2f52-4994-9b15-614446e41912" />
 
 # Auuki
-Auuki is a powerful, no-nonsense app built for hammering out **structured workouts** on a smart trainer, right in your browser. No installs, no dependencies, no slow updates taking from precious training time.
 
-**Key Features**:
-* Run Zwift **.ZWO workouts**
-* Connect via **Bluetooth** to smart trainers, power meters, heart rate monitors, the moxy monitor, and many more
-* Full control with **ERG mode**, **Grade Simulation**, and **Resistance mode**
-* Workouts with **Slope-based targets** for realistic effort control
-* Record **.FIT activities** in a cross-industry standard
-* Recording of native **RR intervals** in the .FIT file
-* Built-in structured workouts to get you started
-* **Intervals.icu and Strava** integrations for seamless syncing and uploads
+Auuki is a desktop-browser indoor cycling app for running structured workouts on a computer connected to a smart trainer. It is designed for a single-user, local-first setup: workouts, settings, and recorded activity data stay in your browser unless you explicitly export or connect a third-party service.
 
-Built as a **progressive web app (PWA)**, Auuki is fully browser-based and runs independently. It makes use of some of the most advanced Browser APIs like: Web Bluetooth, Web Serial, and Web Components. The web version is **free and open-source**, keeping everything on your device.
-Train anywhere, with full control directly in your browser.
+## What this app focuses on
 
-_Status_: Currently working on creating a full suite of Apple platform native apps (iOS, iPadOS, tvOS, watchOS).
+- Computer-based indoor training in Chrome, Edge, Opera, Brave, or another desktop browser with the required device APIs.
+- Smart trainer control over Bluetooth FTMS, Tacx FE-C over BLE, Wahoo CPS, and supported ANT+ setups.
+- Running Zwift `.zwo` workouts and built-in structured workouts.
+- Editing workouts locally before training.
+- Adjusting a structured workout while riding without stopping the session.
+- Recording `.FIT` activity files for export or upload.
 
-# The Web App
-- You can find the web app at [auuki.com](https://auuki.com)
-- There is also a special development version which has the latest features available for preview: [dev.auuki.com](https://dev.auuki.com)
-- [How to create a Profile and Connect Intervals.icu](https://forum.intervals.icu/t/auuki-com-intervals-icu-integration/87105)
+This repo targets desktop-browser workflows only.
 
-## Sponsors 💖
-So, if you’re loving what Auuki’s bringing to the table, consider supporting the project on [GitHub Sponsors](https://github.com/sponsors/dvmarinoff)? Think of it as buying me a coffee or, heck, a whole power meter to keep this thing cranking. Hit that sponsor button and let’s keep the good times rolling!
+## Current features
 
-## Supported Browsers and Platforms
+### Workout execution
 
-### MacOS, Windows, Andorid 
+- Run structured `.zwo` workouts in ERG mode, grade simulation, resistance mode, or slope-targeted workout mode.
+- Move to the next or previous workout step while training.
+- Finish the current step immediately.
+- Extend or shorten the active step by 30 seconds.
+- Pause workout progression separately from the ride/session controls.
+- Scale workout intensity during a ride.
+- Click workout graph blocks to jump directly to a specific interval/step.
+- Use keyboard shortcuts for common workout controls.
 
-Please use either Chrome, Edge, Opera, Samsung Internet, or Brave. These browsers include built-in bluetooth.
+### Workout editing
 
-| Chrome | Edge | Opera | Chrome Android | Samsung Internet | Brave | Firefox | Safari | Safari iOS | Chrome iOS |
-|--------|------|-------|----------------|------------------|-------|---------|--------|------------|------------|
-| yes    | yes  | yes   | yes            | yes              | yes*  | no      | no     | no         | no         |
+- Create and edit workout rows in the browser.
+- Duplicate selected rows.
+- Split selected intervals.
+- Move selected rows up or down.
+- Bulk-adjust selected row power targets.
+- Bulk-adjust selected row durations.
+- Save edited workouts locally and download workout files.
 
-If using Brave browser, you'll need to [manually enable bluetooth support](https://community.brave.com/t/can-you-enable-web-bluetooth-api-in-brave/522553/2).
+### Recording and export
 
-### Linux
-On Linux you might need to turn on the experimental platforms feature flag in your browser:
+- Record `.FIT` activities.
+- Include common cycling metrics such as power, cadence, speed, heart rate, and RR intervals where supported by connected devices.
+- Save activity data locally in the browser.
+- Export files manually, or use optional Strava / Intervals.icu connections where configured.
+
+### Local-first single-user workflow
+
+- No account login or profile screen is required.
+- Core training and editing workflows run locally in the browser.
+- Third-party connections are optional and only needed for external syncing/uploading.
+
+## Supported desktop browsers
+
+Use a current desktop Chromium-based browser for the best hardware support:
+
+| Platform | Recommended browsers | Notes |
+| --- | --- | --- |
+| Windows | Chrome, Edge, Brave, Opera | Best for Bluetooth trainer/device connections. |
+| macOS | Chrome, Edge, Brave, Opera | Best for Bluetooth trainer/device connections. |
+| Linux | Chrome, Edge, Brave, Opera | May require enabling experimental web platform features for some device APIs. |
+
+Firefox and Safari are not recommended because required Bluetooth/serial APIs are missing or incomplete for this app.
+
+For Brave, enable Web Bluetooth if needed: `brave://flags/#enable-experimental-web-platform-features`.
+
+For Linux, enable experimental web platform features if your browser does not expose the required APIs:
 
 - Chrome: `chrome://flags/#enable-experimental-web-platform-features`
-
 - Edge: `edge://flags/#enable-experimental-web-platform-features`
-
 - Opera: `opera://flags/#enable-experimental-web-platform-features`
 
-### iOS
-Not Supported by the Web version
+## Supported trainer/device paths
 
-## Supported Trainers
+### Bluetooth
 
-### FTMS, FE-C over BLE, or WahooCPS
+Bluetooth is the primary connection path. Auuki supports trainers and sensors that expose common cycling services, including:
 
-Works with all trainers that implement the bluetooth Fitness Machine Service (FTMS) or the Tacx FE-C over BLE solution.
-
-The following table is copied from [DC Rainmaker Trainer Guide](https://www.dcrainmaker.com/2020/11/smart-cycle-trainer-recommendations-guide-winter.html/#technical-considerations) and shows current protocol support across the industry.
-
-```
-- Elite:    ANT+ FE-C and Bluetooth FTMS on all 2020 smart trainers.
-- Gravat:   ANT+ FE-C and Bluetooth FTMS on all 2020 smart trainers
-- JetBlack: ANT+ FE-C and Bluetooth FTMS on all 2020 smart trainers.
-- Kinetic:  ANT+ FE-C and Bluetooth FTMS on all 2020 smart trainers.
-- Minoura:  ANT+ FE-C and Bluetooth FTMS on all 2020 smart trainers.
-- Saris:    ANT+ FE-C and Bluetooth FTMS on all 2020 smart trainers.
-- STAC:     ANT+ FE-C and Bluetooth FTMS on all 2020 smart trainers.
-- Tacx:     ANT+ FE-C on all ‘Smart’ branded trainers (except Satori). FTMS on all non-NEO models. FEC over BLE on NEO.
-- Wahoo:    ANT+ FE-C on all smart trainers. FTMS on all 2020 smart trainer.
-- 4iiii:    ANT+ FE-C and Bluetooth FTMS on Fliiiight (--Ed)
-- Schwinn:  Bluetooth FTMS on the IC8 / 800IC (--Ed)
-```
+- FTMS smart trainers
+- Tacx FE-C over BLE trainers
+- Wahoo CPS trainers
+- Bluetooth power meters
+- Bluetooth cadence/speed sensors
+- Bluetooth heart-rate monitors
+- Moxy and compatible muscle oxygen sensors where supported
 
 ### ANT+
 
-Support for ANT+ is experimental at the moment. It is being rewritten right now and the code is moved to [WebANT](https://github.com/dvmarinoff/WebANT), which has a separate demo. When it becomes stable enough will be merged here. It currently has support for Ubuntu(Linux), and partially for MacOS, and Android. Windows 10 may be possible in the future.
+ANT+ support is experimental and depends on browser serial support and compatible USB ANT hardware. Treat ANT+ as an advanced desktop setup, not the default path.
 
+## Launch locally
 
-The current development setup is using Suunto movestick mini, Garmin Fenix 5 watch broadcasting heart rate,
-Tacx Heart Rate monitor, Tacx Flux S trainer, and X240 laptop with Ubuntu 20.04.2 LTS, M1 Mac, and Samsung S9 Android phone.
+### Requirements
 
-## Manual
-- [How to create a Profile and Connect Intervals.icu](https://forum.intervals.icu/t/auuki-com-intervals-icu-integration/87105)
-- [How-To: Using the connection settings](https://github.com/dvmarinoff/Auuki/discussions/91)
-- [How-To: Using Auuki and another app concurrently](https://github.com/dvmarinoff/Auuki/discussions/101)
+- Node.js and npm
+- A supported desktop browser
+- A Bluetooth-capable computer for trainer/sensor connections
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Start the development server
+
+```bash
+npm start
+```
+
+Open the Parcel URL printed in the terminal. It is usually:
+
+```text
+http://localhost:1234
+```
+
+### Start with local TLS
+
+Some device APIs may require a secure context. If you have development certificates in `dev_cert/cert.pem` and `dev_cert/key.pem`, start the TLS dev server with:
+
+```bash
+npm run starttls
+```
+
+### Build production assets
+
+```bash
+npm run build
+```
+
+### Run tests
+
+```bash
+npm test -- --runInBand
+```
+
+## Basic use
+
+1. Open the app on a supported desktop browser.
+2. Pair your trainer and sensors from the connection/settings controls.
+3. Pick a built-in workout or import/edit a `.zwo` workout.
+4. Start the workout.
+5. Use on-screen controls or keyboard shortcuts to adjust the workout while riding.
+6. Save or export the recorded `.FIT` activity when finished.
+
+## Keyboard controls
+
+Common workout shortcuts include:
+
+| Shortcut | Action |
+| --- | --- |
+| Space | Start or pause the session. |
+| `l` | Lap / advance interval behavior. |
+| Right arrow | Next workout step. |
+| Left arrow | Previous workout step. |
+| `]` | Extend the active step. |
+| `[` | Shorten the active step. |
+| `+` / `=` | Increase workout intensity. |
+| `-` | Decrease workout intensity. |
+| Up / Down arrows | Adjust the active mode target where supported. |
+
+Shortcuts are ignored while typing in editor inputs.
+
+## Project scripts
+
+| Command | Purpose |
+| --- | --- |
+| `npm install` | Install dependencies. |
+| `npm start` | Run the local Parcel development server. |
+| `npm run starttls` | Run the local Parcel development server with TLS certificates. |
+| `npm run build` | Build production assets. |
+| `npm test -- --runInBand` | Run the Jest test suite serially. |
+
+## Data and privacy
+
+Auuki is local-first. Workout editing, app settings, and recorded activities are stored in your browser storage unless you export files or connect a third-party service. Clearing browser data can remove local workouts and activity history, so export anything important.
 
 ## Backers
+
 <div>
     <a href="https://github.com/KlausMu" target="_blank">
         <img style="display: inline-block;" src="https://avatars.githubusercontent.com/u/14290221?v=4" width="48" height="48" />

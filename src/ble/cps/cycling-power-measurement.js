@@ -146,8 +146,24 @@ function CyclingPowerMeasurement(args = {}) {
 
 const cyclingPowerMeasurement = CyclingPowerMeasurement();
 
+const _ = {
+    flagsIndex: () => 0,
+    wheelRevolutionsIndex: (flags) => wheelRevolutionDataPresent(flags) ? 4 : undefined,
+    wheelEventIndex: (flags) => wheelRevolutionDataPresent(flags) ? 8 : undefined,
+    crankRevolutionsIndex: (flags) => crankRevolutionDataPresent(flags)
+        ? (wheelRevolutionDataPresent(flags) ? 10 : 4)
+        : undefined,
+    crankEventIndex: (flags) => crankRevolutionDataPresent(flags)
+        ? (wheelRevolutionDataPresent(flags) ? 12 : 6)
+        : undefined,
+};
+
+const measurement = cyclingPowerMeasurement;
+
 export {
     CyclingPowerMeasurement,
     cyclingPowerMeasurement,
+    measurement,
+    _,
 };
 

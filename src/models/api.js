@@ -1,11 +1,7 @@
-import { exists, xf, print, } from '../functions.js';
 import { OAuthService, DialogMsg, stateParam, } from './enums.js';
-import { uuid } from '../storage/uuid.js';
-import config from './config.js';
 import strava from './strava.js';
 import intervals from './intervals.js';
 import trainingPeaks from './training-peaks.js';
-import auth from './auth.js';
 
 
 //
@@ -21,7 +17,6 @@ function API() {
     }
 
     return Object.freeze({
-        auth,
         strava,
         intervals,
         trainingPeaks,
@@ -34,17 +29,10 @@ function API() {
 function Router(args = {}) {
 
     async function start() {
-        const status = await auth.status();
-
         const params = getParams();
         if(hasParams(params)) {
             console.log(params);
             await onQueryParams(params);
-        } else {
-            // TODO: remove
-            // get list of planned events once per period
-            if(status.intervals) {
-            }
         }
         return;
     }
@@ -68,7 +56,6 @@ function Router(args = {}) {
         const code   = params.get('code');
         const scope  = params.get('scope');
         const error  = params.get('error');
-        const token = params.get('token');
 
         // switch
         if(error) {
@@ -88,12 +75,6 @@ function Router(args = {}) {
             if(service === OAuthService.trainingPeaks) {
                 await trainingPeaks.paramsHandler({state, code, scope});
             }
-            return true;
-        }
-        if(!error && token) {
-            xf.dispatch('ui:page-set', 'settings');
-            xf.dispatch('action:nav', 'settings:profile');
-            xf.dispatch('action:auth', ':password:reset');
             return true;
         }
         // clearParams();

@@ -80,6 +80,14 @@ class Watch {
         xf.sub('ui:watchResume',  e => { self.resume();         });
         xf.sub('ui:watchLap',     e => { self.lap();            });
         xf.sub('ui:watchBack',    e => { self.back();           });
+        xf.sub('ui:workoutStepNext',     e => { self.step();           });
+        xf.sub('ui:workoutStepPrevious', e => { self.previousStep();   });
+        xf.sub('ui:workoutStepTimeAdd',  e => { self.adjustCurrentStepTime(e ?? 30); });
+        xf.sub('ui:workoutStepTimeSubtract', e => { self.adjustCurrentStepTime(-(e ?? 30)); });
+        xf.sub('ui:workoutStepFinish',   e => { self.finishCurrentStepNow(); });
+        xf.sub('ui:workoutJumpToStep',   e => { self.jumpToStep(e.intervalIndex, e.stepIndex ?? 0); });
+        xf.sub('ui:workoutPause',        e => { xf.dispatch('workout:paused'); });
+        xf.sub('ui:workoutResume',       e => { xf.dispatch('workout:started'); });
         xf.sub('ui:watchStop',    e => {
             const stop = confirm('Confirm Stop?');
             if(stop) {
@@ -365,6 +373,50 @@ class Watch {
         }
     }
 
+    previousStep() {
+        const self = this;
+        if(!self.isWorkoutStarted()) return;
+
+        let i = self.intervalIndex;
+        let s = self.stepIndex;
+        const intervals = self.intervals;
+
+        if(s > 0) {
+            s -= 1;
+        } else if(i > 0) {
+            i -= 1;
+            s = intervals[i].steps.length - 1;
+            self.nextInterval(intervals, i, s);
+        } else {
+            return;
+        }
+
+        self.nextStep(intervals, i, s);
+    }
+    jumpToStep(intervalIndex, stepIndex = 0) {
+        const intervals = this.intervals;
+        if(!exists(intervals?.[intervalIndex]?.steps?.[stepIndex])) return;
+        this.nextInterval(intervals, intervalIndex, stepIndex);
+        this.nextStep(intervals, intervalIndex, stepIndex);
+        if(!this.isWorkoutStarted()) xf.dispatch('workout:started');
+    }
+    adjustCurrentStepTime(deltaSeconds) {
+        if(!this.isWorkoutStarted()) return;
+        const nextStepTime = Math.max(0, this.stepTime + deltaSeconds);
+        const nextLapTime = Math.max(0, this.lapTime + deltaSeconds);
+
+        xf.dispatch('watch:stepTime', nextStepTime);
+        xf.dispatch('watch:lapTime', nextLapTime);
+        xf.dispatch('watch:stepDuration', Math.max(0, this.stepDuration + deltaSeconds));
+        xf.dispatch('watch:intervalDuration', Math.max(0, this.intervalDuration + deltaSeconds));
+
+        if(nextStepTime === 0) this.step();
+    }
+    finishCurrentStepNow() {
+        if(!this.isWorkoutStarted()) return;
+        xf.dispatch('watch:stepTime', 0);
+        this.step();
+    }
     isDurationStep(intervals, intervalIndex, stepIndex) {
         return exists(intervals[intervalIndex].steps[stepIndex].duration);
     }
@@ -427,7 +479,7 @@ xf.reg('watch:stepIndex',     (index, db) => {
         xf.dispatch('ui:cadence-target-set', 0);
     }
     if(exists(powerTarget)) {
-        xf.dispatch('ui:power-target-set', models.ftp.toAbsolute(powerTarget, db.ftp));
+        xf.dispatch('ui:power-target-set', models.ftp.toAbsolute(powerTarget * (db.workoutIntensity ?? 1), db.ftp));
         if(!exists(slopeTarget) && !equals(db.mode, ControlMode.erg)) {
             xf.dispatch('ui:mode-set', ControlMode.erg);
         }
@@ -437,6 +489,7 @@ xf.reg('watch:stepIndex',     (index, db) => {
 });
 xf.reg('workout:started', (x, db) => db.workoutStatus = 'started');
 xf.reg('workout:stopped', (x, db) => db.workoutStatus = 'stopped');
+xf.reg('workout:paused',  (x, db) => db.workoutStatus = 'paused');
 xf.reg('workout:done',    (x, db) => db.workoutStatus = 'done');
 xf.reg('watch:started',   (x, db) => {
     db.watchStatus = 'started';

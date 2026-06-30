@@ -84,6 +84,8 @@ function IDB(args = {}) {
     }
 
     function createStores(storeNames, keyPaths = []) {
+        storeNames = Array.isArray(storeNames) ? storeNames : [storeNames];
+        keyPaths = Array.isArray(keyPaths) ? keyPaths : [keyPaths];
         storeNames.forEach((storeName, i) => {
             createStore(storeName, existance(keyPaths[i], 'id'));
         });

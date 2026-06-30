@@ -10,6 +10,12 @@ function Keyboard() {
     const isKeyS     = (code) => code === 'KeyS';
     const isKeyL     = (code) => code === 'KeyL';
     const isKeySpace = (code) => code === 'Space';
+    const isKeyRight = (code) => code === 'ArrowRight';
+    const isKeyLeft  = (code) => code === 'ArrowLeft';
+    const isKeyEqual = (code) => code === 'Equal' || code === 'NumpadAdd';
+    const isKeyMinus = (code) => code === 'Minus' || code === 'NumpadSubtract';
+    const isKeyBracketRight = (code) => code === 'BracketRight';
+    const isKeyBracketLeft  = (code) => code === 'BracketLeft';
 
     window.addEventListener('keydown', onKeydown.bind(this));
 
@@ -50,6 +56,12 @@ function Keyboard() {
             e.preventDefault();
             xf.dispatch('key:space');
         }
+        if(isKeyRight(code)) { e.preventDefault(); xf.dispatch('key:right'); }
+        if(isKeyLeft(code)) { e.preventDefault(); xf.dispatch('key:left'); }
+        if(isKeyEqual(code)) { e.preventDefault(); xf.dispatch('key:plus'); }
+        if(isKeyMinus(code)) { e.preventDefault(); xf.dispatch('key:minus'); }
+        if(isKeyBracketRight(code)) { e.preventDefault(); xf.dispatch('key:bracketRight'); }
+        if(isKeyBracketLeft(code)) { e.preventDefault(); xf.dispatch('key:bracketLeft'); }
     }
 }
 
@@ -108,6 +120,12 @@ function KeyboardControls() {
     xf.sub('key:l', e => {
         xf.dispatch('ui:watchLap');
     });
+    xf.sub('key:right', e => xf.dispatch('ui:workoutStepNext'));
+    xf.sub('key:left', e => xf.dispatch('ui:workoutStepPrevious'));
+    xf.sub('key:plus', e => xf.dispatch('ui:workoutIntensityInc'));
+    xf.sub('key:minus', e => xf.dispatch('ui:workoutIntensityDec'));
+    xf.sub('key:bracketRight', e => xf.dispatch('ui:workoutStepTimeAdd', 30));
+    xf.sub('key:bracketLeft', e => xf.dispatch('ui:workoutStepTimeSubtract', 30));
 }
 
 Keyboard();

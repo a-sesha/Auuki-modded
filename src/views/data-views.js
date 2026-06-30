@@ -1259,10 +1259,6 @@ class NavigationStack extends HTMLElement {
                         $view: document.querySelector(`#view--settings-settings`),
                         $link: document.querySelector(`#link--settings-settings`),
                     },
-                    profile: {
-                        $view: document.querySelector(`#view--settings-profile`),
-                        $link: document.querySelector(`#link--settings-profile`),
-                    }
                 }
             },
             home: {
@@ -1312,11 +1308,6 @@ class NavigationStack extends HTMLElement {
 
         if(action === 'settings:settings') {
             this.switch('settings', this.tabs.settings.children);
-            return;
-        }
-        if(action === 'settings:profile') {
-            this.switch('profile', this.tabs.settings.children);
-            models.api.auth.loadTurnstile();
             return;
         }
 
@@ -1544,7 +1535,7 @@ class ModalError extends HTMLElement {
     }
     message(msg) {
         if(msg === DialogMsg.noAuth) {
-            return `Your session is over. You need to login again.`;
+            return `This connected service needs to be reconnected.`;
         };
         return '';
     }
@@ -1823,10 +1814,9 @@ class CompatibilityCheck extends HTMLElement {
         const self = this;
         this.innerHTML =
         `<div id="compatibility--cont">
-             <p>This browser is NOT supported. Please open the app with </p>
+             <p>This desktop browser is NOT supported. Please open the app on a computer with </p>
              <a href="https://www.google.com/chrome/" target="_blank">Chrome</a> or
              <a href="https://www.microsoft.com/edge" target="_blank">Edge</a>
-             <p>Please note that <b>iOS</b> is NOT supported at all, regardless of browser.</p>
              <p>For more information visit the project <a href="https://github.com/dvmarinoff/Flux" target="_blank">Page.</a></p>
          </div>`;
     }

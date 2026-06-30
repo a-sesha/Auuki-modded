@@ -105,6 +105,15 @@ function RevsOverTime(args = {}) {
         reset,
         calculate,
         setMaxRateCount,
+        setRevs,
+        setTime,
+        setRateCount,
+        getRevs,
+        getTime,
+        getRateCount,
+        getMaxRateCount,
+        rollOverTime,
+        rollOverRevs,
     };
 }
 
