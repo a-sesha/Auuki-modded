@@ -173,14 +173,6 @@ function WebBLE() {
     const filters = Filters();
 
     function isAvailable() {
-        // TODO: comment when not working on the iOS connect functionality.
-        // This allows the iOS connection to show up in Chrome not just Safari
-        // if(dev) {
-        //     console.warn(`BLE Bridge mode ACTIVE!`);
-        //     console.warn(`app will use BLE Bridge connection ONLY!`);
-        //     return false;
-        // }
-        // END comment
         if(exists(navigator)) {
             return 'bluetooth' in navigator;
         }

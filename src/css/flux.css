@@ -3177,7 +3177,7 @@ and (min-height: 1600px) {
     }
 }
 
-/* IPhone Pro 12, landscape */
+/* Compact landscape layout */
 @media all
 and (min-width: 500px)
 and (max-height: 432px)

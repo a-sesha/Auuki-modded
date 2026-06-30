@@ -198,7 +198,7 @@ class MoxyGraph extends HTMLElement {
     }
     renderStep(key) {
         const points = this.path[key].join(',');
-        this.$path[key].setAttribute('points', points);
+        this.$path[key]?.setAttribute('points', points);
     }
 }
 
