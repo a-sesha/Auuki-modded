@@ -58,7 +58,7 @@ let db = {
     page: models.page.default,
     lock: false,
 
-    // Profile
+    // User settings
     ftp: models.ftp.default,
     weight: models.weight.default,
     theme: models.theme.default,
@@ -69,11 +69,12 @@ let db = {
     // UI options
     powerSmoothing: 0,
     dataTileSwitch: models.dataTileSwitch.default,
-    auth: ':login',
 
     // Workouts
     workouts: [],
     workout: models.workout.default,
+    workoutOriginal: null,
+    workoutIntensity: 1,
 
     // Activities
     activity: models.activity.default,
@@ -279,7 +280,7 @@ xf.reg(`ui:slope-target-dec`, (_, db) => {
     db.slopeTarget = models.slopeTarget.dec(db.slopeTarget);
 });
 
-// Profile
+// User settings
 xf.reg('ui:ftp-set', (ftp, db) => {
     db.ftp = models.ftp.set(ftp);
     models.ftp.backup(db.ftp);
@@ -315,15 +316,49 @@ xf.reg(`ui:volume-up`, (_, db) => {
     models.volume.backup(db.volume);
 });
 
+
+function cloneWorkout(workout) {
+    return JSON.parse(JSON.stringify(workout));
+}
+function transformWorkout(workout, fn) {
+    const next = cloneWorkout(workout);
+    next.intervals = next.intervals.map(fn);
+    next.meta.duration = next.intervals.reduce((sum, interval) => sum + (interval.duration ?? 0), 0);
+    return next;
+}
+xf.reg('ui:workoutIntensitySet', (value, db) => db.workoutIntensity = Math.max(0.5, Math.min(1.5, value)));
+xf.reg('ui:workoutIntensityInc', (_, db) => db.workoutIntensity = Math.min(1.5, +(db.workoutIntensity + 0.05).toFixed(2)));
+xf.reg('ui:workoutIntensityDec', (_, db) => db.workoutIntensity = Math.max(0.5, +(db.workoutIntensity - 0.05).toFixed(2)));
+xf.reg('ui:workoutIntensityReset', (_, db) => db.workoutIntensity = 1);
+xf.reg('ui:workoutTransform', (action, db) => {
+    if(!exists(db.workout?.intervals)) return;
+    if(!exists(db.workoutOriginal)) db.workoutOriginal = cloneWorkout(db.workout);
+    if(action === 'reset') { db.workout = cloneWorkout(db.workoutOriginal); db.workoutIntensity = 1; return; }
+    if(action === 'removeCooldown') {
+        db.workout = transformWorkout(db.workout, (interval, index, intervals) => index === intervals.length - 1 ? Object.assign({}, interval, {duration: 0, steps: []}) : interval);
+    }
+    if(action === 'shortRecoveries') {
+        db.workout = transformWorkout(db.workout, interval => Object.assign({}, interval, {
+            duration: interval.steps.some(step => (step.power ?? 1) <= 0.6) ? Math.max(15, Math.round((interval.duration ?? 0) * 0.75)) : interval.duration,
+            steps: interval.steps.map(step => (step.power ?? 1) <= 0.6 ? Object.assign({}, step, {duration: Math.max(15, Math.round((step.duration ?? 0) * 0.75))}) : step),
+        }));
+    }
+    if(action === 'extendWarmup') {
+        db.workout = transformWorkout(db.workout, (interval, index) => index === 0 ? Object.assign({}, interval, {duration: (interval.duration ?? 0) + 300, steps: interval.steps.map(step => Object.assign({}, step, {duration: (step.duration ?? 0) + 300}))}) : interval);
+    }
+});
+
 // Workouts
 xf.reg('workout', (workout, db) => {
     db.workout = models.workout.set(workout);
 });
 xf.reg('ui:workout:select', (id, db) => {
     db.workout = models.workouts.get(db.workouts, id);
+    db.workoutOriginal = JSON.parse(JSON.stringify(db.workout));
 });
 xf.reg('ui:planned:select', (id, db) => {
     db.workout = models.planned.get(id);
+    db.workoutOriginal = JSON.parse(JSON.stringify(db.workout));
 });
 xf.reg('ui:workout:remove', (id, db) => {
     db.workouts = models.workouts.remove(db.workouts, id);
@@ -393,10 +428,6 @@ xf.reg(`ant:search:device-found`, (x, db) => {
 });
 xf.reg(`ant:search:stopped`, (x, db) => {
     db.antSearchList = [];
-});
-
-xf.reg('auth', (x, db) => {
-    // TODO: remove?
 });
 
 xf.reg('services', (x, db) => {

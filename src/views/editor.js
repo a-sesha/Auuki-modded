@@ -362,8 +362,56 @@ function Editor() {
 
         return addition;
     }
+    function selectedIndexes() {
+        return rows.reduce((acc, row, index) => { if(row.getSelect()) acc.push(index); return acc; }, []);
+    }
     function remove() {
-        rows.pop();
+        const indexes = selectedIndexes();
+        if(empty(indexes)) rows.pop();
+        indexes.reverse().forEach(index => rows.splice(index, 1));
+        return rows;
+    }
+    function duplicate() {
+        const indexes = selectedIndexes();
+        const source = empty(indexes) ? [rows.length - 1] : indexes;
+        source.forEach(index => { const r = Row(); r.set(rows[index].get()); rows.splice(index + 1, 0, r); });
+        return rows;
+    }
+    function split() {
+        const indexes = selectedIndexes();
+        indexes.reverse().forEach(index => {
+            const data = rows[index].get();
+            const half = Math.max(1, Math.floor(data.duration / 2));
+            rows[index].set(Object.assign({}, data, {duration: half}));
+            const r = Row();
+            r.set(Object.assign({}, data, {duration: data.duration - half || half, select: false}));
+            rows.splice(index + 1, 0, r);
+        });
+        return rows;
+    }
+    function moveSelected(direction) {
+        const indexes = direction < 0 ? selectedIndexes() : selectedIndexes().reverse();
+        indexes.forEach(index => {
+            const next = index + direction;
+            if(next < 0 || next >= rows.length) return;
+            const tmp = rows[index];
+            rows[index] = rows[next];
+            rows[next] = tmp;
+        });
+        return rows;
+    }
+    function bulkPower(delta) {
+        selectedIndexes().forEach(index => {
+            const data = rows[index].get();
+            rows[index].set(Object.assign({}, data, {power: Math.max(0, data.power + delta)}));
+        });
+        return rows;
+    }
+    function bulkDuration(delta) {
+        selectedIndexes().forEach(index => {
+            const data = rows[index].get();
+            rows[index].set(Object.assign({}, data, {duration: Math.max(1, data.duration + delta)}));
+        });
         return rows;
     }
     function save() {
@@ -400,9 +448,15 @@ function Editor() {
         getDescription,
         add,
         remove,
+        duplicate,
+        split,
+        moveSelected,
+        bulkPower,
+        bulkDuration,
         save,
         format,
         toZwo,
+        getRows: () => rows,
     });
 }
 
@@ -560,6 +614,12 @@ class WorkoutEditor extends HTMLElement {
             remove: '.editor--remove',
             save: '.editor--save',
             download: '.editor--download',
+            duplicate: '.editor--duplicate',
+            split: '.editor--split',
+            up: '.editor--up',
+            down: '.editor--down',
+            bulkPower: '.editor--bulk-power',
+            bulkDuration: '.editor--bulk-duration',
         };
         this.editor = Editor();
         this.rows = new Map();
@@ -579,6 +639,12 @@ class WorkoutEditor extends HTMLElement {
         this.$remove = this.$root.querySelector(this.selectors.remove);
         this.$save = this.$root.querySelector(this.selectors.save);
         this.$download = this.$root.querySelector(this.selectors.download);
+        this.$duplicate = this.$root.querySelector(this.selectors.duplicate);
+        this.$split = this.$root.querySelector(this.selectors.split);
+        this.$up = this.$root.querySelector(this.selectors.up);
+        this.$down = this.$root.querySelector(this.selectors.down);
+        this.$bulkPower = this.$root.querySelector(this.selectors.bulkPower);
+        this.$bulkDuration = this.$root.querySelector(this.selectors.bulkDuration);
         this.setTimeRefs();
 
         this.$body.addEventListener('input', this.setTime.bind(this), this.signal);
@@ -590,6 +656,12 @@ class WorkoutEditor extends HTMLElement {
         this.$remove.addEventListener(`pointerup`, this.onRemove.bind(this), this.signal);
         this.$save.addEventListener(`pointerup`, this.onSave.bind(this), this.signal);
         this.$download.addEventListener(`pointerup`, this.onDownload.bind(this), this.signal);
+        this.$duplicate?.addEventListener(`pointerup`, this.onDuplicate.bind(this), this.signal);
+        this.$split?.addEventListener(`pointerup`, this.onSplit.bind(this), this.signal);
+        this.$up?.addEventListener(`pointerup`, this.onUp.bind(this), this.signal);
+        this.$down?.addEventListener(`pointerup`, this.onDown.bind(this), this.signal);
+        this.$bulkPower?.addEventListener(`pointerup`, this.onBulkPower.bind(this), this.signal);
+        this.$bulkDuration?.addEventListener(`pointerup`, this.onBulkDuration.bind(this), this.signal);
 
         this.$name.value = this.editor.getName();
         this.$author.value = this.editor.getAuthor();
@@ -650,18 +722,26 @@ class WorkoutEditor extends HTMLElement {
         });
 
     }
-    onRemove(e) {
-        if(this.rows.size > 0) {
-            this.editor.remove();
-            const $row = this.$body.lastChild;
-            const rowView = this.rows.get(this.rows.size-1);
-            rowView.disconnect();
-            $row.remove();
-
-            this.setTimeRefs();
-            this.setTime();
-        }
+    renderRows() {
+        this.rows.forEach(row => row.disconnect());
+        this.rows.clear();
+        this.$body.innerHTML = '';
+        this.editor.getRows().forEach(rowModel => {
+            const rowView = RowView({model: rowModel});
+            this.rows.set(this.rows.size, rowView);
+            this.$body.insertAdjacentHTML('beforeend', rowView.build());
+            rowView.connect(this.$body.lastChild);
+        });
+        this.setTimeRefs();
+        this.setTime();
     }
+    onRemove(e) { if(this.rows.size > 0) { this.editor.remove(); this.renderRows(); } }
+    onDuplicate(e) { this.editor.duplicate(); this.renderRows(); }
+    onSplit(e) { this.editor.split(); this.renderRows(); }
+    onUp(e) { this.editor.moveSelected(-1); this.renderRows(); }
+    onDown(e) { this.editor.moveSelected(1); this.renderRows(); }
+    onBulkPower(e) { this.editor.bulkPower(0.05); this.renderRows(); }
+    onBulkDuration(e) { this.editor.bulkDuration(30); this.renderRows(); }
     validate(fn) {
         // const { isValid, errors } = this.editor.validate();
         // if(isValid) {

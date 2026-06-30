@@ -1259,10 +1259,6 @@ class NavigationStack extends HTMLElement {
                         $view: document.querySelector(`#view--settings-settings`),
                         $link: document.querySelector(`#link--settings-settings`),
                     },
-                    profile: {
-                        $view: document.querySelector(`#view--settings-profile`),
-                        $link: document.querySelector(`#link--settings-profile`),
-                    }
                 }
             },
             home: {
@@ -1312,11 +1308,6 @@ class NavigationStack extends HTMLElement {
 
         if(action === 'settings:settings') {
             this.switch('settings', this.tabs.settings.children);
-            return;
-        }
-        if(action === 'settings:profile') {
-            this.switch('profile', this.tabs.settings.children);
-            models.api.auth.loadTurnstile();
             return;
         }
 
@@ -1544,7 +1535,7 @@ class ModalError extends HTMLElement {
     }
     message(msg) {
         if(msg === DialogMsg.noAuth) {
-            return `Your session is over. You need to login again.`;
+            return `This connected service needs to be reconnected.`;
         };
         return '';
     }

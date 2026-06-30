@@ -4,14 +4,17 @@
 Auuki is a powerful, no-nonsense app built for hammering out **structured workouts** on a smart trainer, right in your browser. No installs, no dependencies, no slow updates taking from precious training time.
 
 **Key Features**:
-* Run Zwift **.ZWO workouts**
+* Run Zwift **.ZWO workouts** and built-in structured workouts
+* Dynamically control workouts while training: next/previous step, finish the current step, extend or shorten intervals, and pause workout progression independently
+* Scale workout intensity during a ride and use keyboard shortcuts for quick workout control
+* Scrub workouts from the workout graph by selecting specific intervals/steps
+* Edit workouts locally with duplicate, split, move, bulk power, and bulk duration tools
 * Connect via **Bluetooth** to smart trainers, power meters, heart rate monitors, the moxy monitor, and many more
 * Full control with **ERG mode**, **Grade Simulation**, and **Resistance mode**
 * Workouts with **Slope-based targets** for realistic effort control
-* Record **.FIT activities** in a cross-industry standard
-* Recording of native **RR intervals** in the .FIT file
-* Built-in structured workouts to get you started
-* **Intervals.icu and Strava** integrations for seamless syncing and uploads
+* Record **.FIT activities** in a cross-industry standard, including native **RR intervals**
+* Optional **Intervals.icu and Strava** integrations for workout syncing and activity uploads
+* Single-user, local-first workflow with no account login required
 
 Built as a **progressive web app (PWA)**, Auuki is fully browser-based and runs independently. It makes use of some of the most advanced Browser APIs like: Web Bluetooth, Web Serial, and Web Components. The web version is **free and open-source**, keeping everything on your device.
 Train anywhere, with full control directly in your browser.
@@ -21,7 +24,28 @@ _Status_: Currently working on creating a full suite of Apple platform native ap
 # The Web App
 - You can find the web app at [auuki.com](https://auuki.com)
 - There is also a special development version which has the latest features available for preview: [dev.auuki.com](https://dev.auuki.com)
-- [How to create a Profile and Connect Intervals.icu](https://forum.intervals.icu/t/auuki-com-intervals-icu-integration/87105)
+
+## Launch locally
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start the local development server:
+   ```bash
+   npm start
+   ```
+3. Open the local Parcel URL shown in the terminal, usually `http://localhost:1234`.
+
+For browser APIs that require a secure context, use the TLS dev server after adding the expected development certificates under `dev_cert/`:
+```bash
+npm run starttls
+```
+
+Useful project checks:
+```bash
+npm run build
+npm test -- --runInBand
+```
 
 ## Sponsors 💖
 So, if you’re loving what Auuki’s bringing to the table, consider supporting the project on [GitHub Sponsors](https://github.com/sponsors/dvmarinoff)? Think of it as buying me a coffee or, heck, a whole power meter to keep this thing cranking. Hit that sponsor button and let’s keep the good times rolling!
@@ -81,7 +105,6 @@ The current development setup is using Suunto movestick mini, Garmin Fenix 5 wat
 Tacx Heart Rate monitor, Tacx Flux S trainer, and X240 laptop with Ubuntu 20.04.2 LTS, M1 Mac, and Samsung S9 Android phone.
 
 ## Manual
-- [How to create a Profile and Connect Intervals.icu](https://forum.intervals.icu/t/auuki-com-intervals-icu-integration/87105)
 - [How-To: Using the connection settings](https://github.com/dvmarinoff/Auuki/discussions/91)
 - [How-To: Using Auuki and another app concurrently](https://github.com/dvmarinoff/Auuki/discussions/101)
 

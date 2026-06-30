@@ -114,8 +114,6 @@ function Intervals(args = {}) {
             } else {
                 if(response.status === 403) {
                     console.log(`:api :no-auth`);
-                    xf.dispatch('action:auth', ':password:login');
-
                     xf.dispatch('ui:modal:error:open', DialogMsg.noAuth);
                 }
                 return ':fail';
@@ -154,7 +152,6 @@ function Intervals(args = {}) {
                 xf.dispatch('action:planned', ':intervals:wod:fail');
                 if(response.status === 403) {
                     console.log(`:api :no-auth`);
-                    xf.dispatch('action:auth', ':password:login');
                     xf.dispatch('ui:modal:error:open', DialogMsg.noAuth);
                 }
                 return [];
@@ -193,7 +190,6 @@ function Intervals(args = {}) {
                 xf.dispatch('action:planned', ':intervals:wod:fail');
                 if(response.status === 403) {
                     console.log(`:api :no-auth`);
-                    xf.dispatch('action:auth', ':password:login');
                     xf.dispatch('ui:modal:error:open', DialogMsg.noAuth);
                 }
                 return [];
@@ -312,7 +308,6 @@ function Intervals(args = {}) {
                 xf.dispatch('action:athlete', ':intervals:athlete:fail');
                 if(response.status === 403) {
                     console.log(`:api :no-auth`);
-                    xf.dispatch('action:auth', ':password:login');
                     xf.dispatch('ui:modal:error:open', DialogMsg.noAuth);
                 }
                 return athleteToSettings();
