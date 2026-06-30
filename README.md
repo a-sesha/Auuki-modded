@@ -2,7 +2,18 @@
 
 # Auuki
 
-Auuki is a desktop-browser indoor cycling app for running structured workouts on a computer connected to a smart trainer. It is designed for a single-user, local-first setup: workouts, settings, and recorded activity data stay in your browser unless you explicitly export or connect a third-party service.
+**Key Features**:
+* Run Zwift **.ZWO workouts** and built-in structured workouts
+* Dynamically control workouts while training: next/previous step, finish the current step, extend or shorten intervals, and pause workout progression independently
+* Scale workout intensity during a ride and use keyboard shortcuts for quick workout control
+* Scrub workouts from the workout graph by selecting specific intervals/steps
+* Edit workouts locally with duplicate, split, move, bulk power, and bulk duration tools
+* Connect via **Bluetooth** to smart trainers, power meters, heart rate monitors, the moxy monitor, and many more
+* Full control with **ERG mode**, **Grade Simulation**, and **Resistance mode**
+* Workouts with **Slope-based targets** for realistic effort control
+* Record **.FIT activities** in a cross-industry standard, including native **RR intervals**
+* Optional **Intervals.icu and Strava** integrations for workout syncing and activity uploads
+* Single-user, local-first workflow with no account login required
 
 ## What this app focuses on
 
@@ -13,7 +24,31 @@ Auuki is a desktop-browser indoor cycling app for running structured workouts on
 - Adjusting a structured workout while riding without stopping the session.
 - Recording `.FIT` activity files for export or upload.
 
-This repo targets desktop-browser workflows only.
+# The Web App
+- You can find the web app at [auuki.com](https://auuki.com)
+- There is also a special development version which has the latest features available for preview: [dev.auuki.com](https://dev.auuki.com)
+
+## Launch locally
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start the local development server:
+   ```bash
+   npm start
+   ```
+3. Open the local Parcel URL shown in the terminal, usually `http://localhost:1234`.
+
+For browser APIs that require a secure context, use the TLS dev server after adding the expected development certificates under `dev_cert/`:
+```bash
+npm run starttls
+```
+
+Useful project checks:
+```bash
+npm run build
+npm test -- --runInBand
+```
 
 ## Current features
 
@@ -137,44 +172,9 @@ npm test -- --runInBand
 
 ## Basic use
 
-1. Open the app on a supported desktop browser.
-2. Pair your trainer and sensors from the connection/settings controls.
-3. Pick a built-in workout or import/edit a `.zwo` workout.
-4. Start the workout.
-5. Use on-screen controls or keyboard shortcuts to adjust the workout while riding.
-6. Save or export the recorded `.FIT` activity when finished.
-
-## Keyboard controls
-
-Common workout shortcuts include:
-
-| Shortcut | Action |
-| --- | --- |
-| Space | Start or pause the session. |
-| `l` | Lap / advance interval behavior. |
-| Right arrow | Next workout step. |
-| Left arrow | Previous workout step. |
-| `]` | Extend the active step. |
-| `[` | Shorten the active step. |
-| `+` / `=` | Increase workout intensity. |
-| `-` | Decrease workout intensity. |
-| Up / Down arrows | Adjust the active mode target where supported. |
-
-Shortcuts are ignored while typing in editor inputs.
-
-## Project scripts
-
-| Command | Purpose |
-| --- | --- |
-| `npm install` | Install dependencies. |
-| `npm start` | Run the local Parcel development server. |
-| `npm run starttls` | Run the local Parcel development server with TLS certificates. |
-| `npm run build` | Build production assets. |
-| `npm test -- --runInBand` | Run the Jest test suite serially. |
-
-## Data and privacy
-
-Auuki is local-first. Workout editing, app settings, and recorded activities are stored in your browser storage unless you export files or connect a third-party service. Clearing browser data can remove local workouts and activity history, so export anything important.
+## Manual
+- [How-To: Using the connection settings](https://github.com/dvmarinoff/Auuki/discussions/91)
+- [How-To: Using Auuki and another app concurrently](https://github.com/dvmarinoff/Auuki/discussions/101)
 
 ## Backers
 
